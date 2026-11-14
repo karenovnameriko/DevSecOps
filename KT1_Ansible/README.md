@@ -238,7 +238,8 @@ sudo wc -l /opt/config-backups/sshd_config /opt/config-backups/nginx.conf
 
 ## Сценарий 5. Управление системными службами
 
-**Цель:** разработать Ansible Playbook для управления системными службами на удалённом сервере: запуск, остановка и перезапуск.
+### Цель
+Разработать Ansible Playbook для управления системными службами на удалённом сервере: запуск, остановка и перезапуск.
 
 Создан Playbook `05_manage_services.yml`, использующий модуль `ansible.builtin.systemd_service` для управления службами через systemd.
 
@@ -249,7 +250,7 @@ sudo wc -l /opt/config-backups/sshd_config /opt/config-backups/nginx.conf
 
 В Playbook реализованы три задачи с условием `when`. В зависимости от переданного значения выполняется только соответствующая задача.
 
-**1. Запуск службы**
+### Запуск службы
 
 Команда запуска:
 
@@ -259,7 +260,7 @@ ansible-playbook 05_manage_services.yml -k -K -e "service=nginx operation=start"
 
 ![](screenshots/pb51.png)
 
-**2. Остановка службы**
+### Остановка службы
 
 Команда остановки:
 
@@ -269,7 +270,7 @@ ansible-playbook 05_manage_services.yml -k -K -e "service=nginx operation=stop"
 
 ![](screenshots/pb52.png)
 
-**3. Перезапуск службы**
+### Перезапуск службы
 
 Команда перезапуска:
 
@@ -279,7 +280,7 @@ ansible-playbook 05_manage_services.yml -k -K -e "service=nginx operation=restar
 
 ![](screenshots/pb53.png)
 
-**Проверка выполнения**
+### Проверка выполнения
 
 После каждой операции состояние службы проверялось непосредственно на целевом Ubuntu-сервере с помощью команды:
 
@@ -298,13 +299,14 @@ systemctl status nginx
 
 ## Сценарий 6. Настройка файрвола
 
-**Цель:** разработать Ansible Playbook для автоматической настройки файрвола на целевом сервере с определёнными правилами доступа.
+### Цель:
+Разработать Ansible Playbook для автоматической настройки файрвола на целевом сервере с определёнными правилами доступа.
 
 Для выполнения задания использовался UFW (Uncomplicated Firewall) — инструмент управления межсетевым экраном в Ubuntu.
 
 Создан Playbook `06_firewall.yml`, использующий модуль `community.general.ufw` для настройки правил сетевого доступа.
 
-**Выполненные действия:**
+### Выполненные действия
 
 1. Установка UFW с помощью `ansible.builtin.apt`.
 2. Разрешение входящих SSH-подключений через TCP-порт `22`.
