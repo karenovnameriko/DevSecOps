@@ -389,3 +389,37 @@ pg_lsclusters
 
 PostgreSQL успешно установлен, запущен и добавлен в автозагрузку. Кластер `main` версии PostgreSQL 18 находится в состоянии `online` и использует порт `5432`. Ansible Playbook завершился без ошибок (`failed=0`).
 
+
+## Сценарий 8. Деплой приложения из Git-репозитория
+
+**Файл:** `08_deploy_git.yml`
+
+### Назначение
+
+Создание Ansible Playbook для клонирования Git-репозитория и развёртывания приложения на целевом сервере с использованием веб-сервера Nginx.
+
+### Выполненные действия
+
+1. Установка Git с помощью модуля `ansible.builtin.apt`.
+2. Клонирование репозитория `https://github.com/Maryam-Skaik/static-website-demo.git` в каталог `/opt/static-website` с помощью `ansible.builtin.git`.
+3. Копирование файлов приложения в каталог `/var/www/html/` с помощью `ansible.builtin.copy`.
+
+### Запуск
+```bash
+ansible-playbook 08_deploy_git.yml -k -K
+```
+### Проверка
+
+Проверка HTTP-ответа Nginx на целевом сервере:
+```bash
+curl -I http://localhost
+```
+
+Получен ответ `HTTP/1.1 200 OK`, подтверждающий успешную обработку HTTP-запроса.
+
+![](screenshots/pb81.png)
+![](screenshots/pb82.png)
+
+### Результат
+
+Git-репозиторий успешно клонирован, файлы приложения скопированы в корневой каталог Nginx. Веб-сервер возвращает HTTP-ответ `200 OK`. Ansible Playbook завершился без ошибок (`failed=0`).
