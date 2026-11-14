@@ -1,0 +1,23 @@
+---
+- name: Deploy application from Git
+  hosts: NGINX
+  become: true
+
+  tasks:
+    - name: Install Git
+      ansible.builtin.apt:
+        name: git
+        state: present
+        update_cache: true
+
+    - name: Clone application repository
+      ansible.builtin.git:
+        repo: https://github.com/Maryam-Skaik/static-website-demo.git
+        dest: /opt/static-website
+        version: main
+
+    - name: Deploy application
+      ansible.builtin.copy:
+        src: /opt/static-website/
+        dest: /var/www/html/
+        remote_src: true
