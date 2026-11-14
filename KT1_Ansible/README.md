@@ -423,3 +423,43 @@ curl -I http://localhost
 ### Результат
 
 Git-репозиторий успешно клонирован, файлы приложения скопированы в корневой каталог Nginx. Веб-сервер возвращает HTTP-ответ `200 OK`. Ansible Playbook завершился без ошибок (`failed=0`).
+
+
+## Сценарий 9. Замена строк в HTML-файле
+
+**Файл:** `09_lineinfile.yml`
+
+### Назначение
+
+Разработка Ansible Playbook для замены части текста в HTML-файле `index.html` с использованием модуля `ansible.builtin.lineinfile`.
+
+### Выполненные действия
+
+1. Определение пути к HTML-файлу через переменную `file_path`.
+2. Поиск необходимого текста с помощью параметра `regexp`.
+3. Замена найденной части строки с помощью параметра `line`.
+4. Использование `backrefs: true` для сохранения остальных частей HTML-строки.
+5. Передача параметров замены при запуске Playbook.
+
+### Запуск
+
+```bash
+ansible-playbook 09_lineinfile.yml -k -K \
+-e '{"file_path":"/var/www/html/index.html","search_text":"Welcome to My Purple Demo","replace_text":"Welcome to My Ansible Demo"}'
+```
+
+### Проверка
+
+Проверка результата замены в браузере:
+
+```text
+http://172.16.222.129
+```
+![](screenshots/pb91.png)
+![](screenshots/pb92.png)
+
+После выполнения Playbook заголовок сайта должен измениться с `Welcome to My Purple Demo` на `Welcome to My Ansible Demo`.
+
+### Результат
+
+Создан Ansible Playbook для замены части текста в HTML-файле с сохранением остальной HTML-разметки. Путь к файлу и заменяемый текст передаются через переменные при запуске, что позволяет использовать Playbook для разных файлов и значений.

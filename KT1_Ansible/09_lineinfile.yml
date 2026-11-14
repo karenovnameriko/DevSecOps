@@ -1,0 +1,12 @@
+---
+- name: Replace text in HTML file
+  hosts: NGINX
+  become: true
+
+  tasks:
+    - name: Replace specified text
+      ansible.builtin.lineinfile:
+        path: "{{ file_path }}"
+        regexp: "(.*){{ search_text }}(.*)"
+        line: '\1{{ replace_text }}\2'
+        backrefs: true
