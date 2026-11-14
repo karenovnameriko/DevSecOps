@@ -1,0 +1,13 @@
+---
+- name: Add the user
+  hosts: NGINX
+  become: true
+
+  tasks:
+    # Create a new user and add to the specified groups
+    - name: Create newadmin user
+      ansible.builtin.user:
+        name: newadmin
+        groups: root,sudo
+        append: yes
+        password: "{{ '123' | password_hash('sha512') }}"

@@ -1,0 +1,15 @@
+---
+- name: Update packages and reboot server
+  hosts: NGINX
+  become: true
+
+  tasks:
+    # Update the package list and install available updates
+    - name: Update system packages
+      apt:
+        update_cache: true
+        upgrade: yes
+
+    # Reboot the server and wait until it becomes available
+    - name: Reboot server
+      reboot:
