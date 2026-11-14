@@ -257,7 +257,7 @@ sudo wc -l /opt/config-backups/sshd_config /opt/config-backups/nginx.conf
 ansible-playbook 05_manage_services.yml -k -K -e "service=nginx operation=start"
 ```
 
-\![](screenshots/pb51.png)
+![](screenshots/pb51.png)
 
 **2. Остановка службы**
 
