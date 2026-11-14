@@ -1,0 +1,63 @@
+---
+- name: Install Docker and create containers
+  hosts: docker
+  become: true
+
+  tasks:
+    - name: Install required system packages
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+          - python3-pip
+          - python3-venv
+        state: present
+        update_cache: true
+
+    - name: Create Docker GPG key directory
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Add Docker GPG key
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: '0644'
+
+    - name: Add Docker repository
+      ansible.builtin.deb822_repository:
+        name: docker
+        types: [deb]
+        uris: https://download.docker.com/linux/ubuntu
+        suites: "{{ ansible_distribution_release }}"
+        components: [stable]
+        architectures: [arm64]
+        signed_by: /etc/apt/keyrings/docker.asc
+        state: present
+
+    - name: Install Docker
+      ansible.builtin.apt:
+        name: docker-ce
+        state: present
+        update_cache: true
+
+    - name: Install Docker module for Python
+      ansible.builtin.pip:
+        name: docker
+        virtualenv: /opt/docker-venv
+        virtualenv_command: python3 -m venv
+
+    - name: Pull default Docker image
+      community.docker.docker_image:
+        name: "{{ default_container_image }}"
+        source: pull
+
+    - name: Create default containers
+      community.docker.docker_container:
+        name: "{{ default_container_name }}{{ item }}"
+        image: "{{ default_container_image }}"
+        command: "{{ default_container_command }}"
+        state: present
+      with_sequence: count={{ container_count }}

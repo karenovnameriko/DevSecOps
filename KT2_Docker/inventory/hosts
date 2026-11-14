@@ -1,0 +1,2 @@
+[docker]
+172.16.222.129 ansible_user=meriko
