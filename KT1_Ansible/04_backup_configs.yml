@@ -1,33 +1,26 @@
 
 ---
-# Backup configuration files on the target server
-- name: Backup configuration files
+- name: Backup configuration files and directories
   hosts: NGINX
   become: true
 
+  vars:
+    backup_dir: /opt/config-backups
+
   tasks:
-    # Create a directory for backup files
     - name: Create backup directory
       ansible.builtin.file:
-        path: /opt/config-backups 
-        state: directory   
+        path: "{{ backup_dir }}"
+        state: directory
         owner: root
         group: root
         mode: '0700'
 
-    # Copy SSH configuration to the backup directory
-    - name: Backup SSH configuration
+    - name: Backup configuration files and directories
       ansible.builtin.copy:
-        src: /etc/ssh/sshd_config
-        dest: /opt/config-backups/sshd_config
+        src: "{{ item }}"
+        dest: "{{ backup_dir }}/{{ item | basename }}"
         remote_src: true
         mode: preserve
-
-    # Copy Nginx configuration to the backup directory
-    - name: Backup Nginx configuration
-      ansible.builtin.copy:
-        src: /etc/nginx/nginx.conf
-        dest: /opt/config-backups/nginx.conf
-        remote_src: true
-        mode: preserve
+      loop: "{{ backup_paths }}"
 
