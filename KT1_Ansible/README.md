@@ -38,7 +38,7 @@ systemctl status nginx
 curl -I http://localhost
 ```
 
-![Проверка установки и запуска Nginx](screenshots/pb1.png)
+![](screenshots/pb1.png)
 ### Результат
 
 Nginx успешно установлен, запущен и добавлен в автозагрузку. Проверка HTTP-запросом вернула `HTTP/1.1 200 OK`.
@@ -94,7 +94,7 @@ groups
 sudo whoami
 ```
 
-![Проверка newadmin](screenshots/pb2.png)
+![](screenshots/pb2.png)
 
 ### Результат
 
