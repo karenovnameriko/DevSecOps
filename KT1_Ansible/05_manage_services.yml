@@ -1,13 +1,23 @@
-
 ---
-- name: Manage system service
+- name: Manage system services
   hosts: NGINX
   become: true
 
   tasks:
-    - name: Ensure service is running and enabled
+    - name: Start service
       ansible.builtin.systemd_service:
-        name: "{{ service_name }}"
+        name: "{{ service }}"
         state: started
-        enabled: true
+      when: action == "start"
 
+    - name: Stop service
+      ansible.builtin.systemd_service:
+        name: "{{ service }}"
+        state: stopped
+      when: action == "stop"
+
+    - name: Restart service
+      ansible.builtin.systemd_service:
+        name: "{{ service }}"
+        state: restarted
+      when: action == "restart"

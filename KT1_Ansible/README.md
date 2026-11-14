@@ -220,7 +220,7 @@ sudo ls -lah /opt/config-backups/
 ```bash
 sudo wc -l /opt/config-backups/sshd_config /opt/config-backups/nginx.conf
 ```
-![](screenshots/pb1.png)
+![](screenshots/pb4.png)
 
 Результат:
 
@@ -234,3 +234,63 @@ sudo wc -l /opt/config-backups/sshd_config /opt/config-backups/nginx.conf
 
 Доступ к директории ограничен пользователем `root`, поэтому для проверки используется `sudo`
 
+
+
+### Сценарий 5. Управление системными службами
+
+**Цель:** разработать Ansible Playbook для управления системными службами на удалённом сервере: запуск, остановка и перезапуск.
+
+Создан Playbook `05_manage_services.yml`, использующий модуль `ansible.builtin.systemd_service` для управления службами через systemd.
+
+Название службы и выполняемая операция передаются при запуске Playbook через дополнительные переменные:
+
+- `service` — название службы;
+- `operation` — выполняемая операция (`start`, `stop` или `restart`).
+
+В Playbook реализованы три задачи с условием `when`. В зависимости от переданного значения выполняется только соответствующая задача.
+
+**1. Запуск службы**
+
+Команда запуска:
+
+```bash
+ansible-playbook 05_manage_services.yml -k -K -e "service=nginx operation=start"
+```
+
+\![](screenshots/pb51.png)
+
+**2. Остановка службы**
+
+Команда остановки:
+
+```bash
+ansible-playbook 05_manage_services.yml -k -K -e "service=nginx operation=stop"
+```
+
+![](screenshots/pb52.png)
+
+**3. Перезапуск службы**
+
+Команда перезапуска:
+
+```bash
+ansible-playbook 05_manage_services.yml -k -K -e "service=nginx operation=restart"
+```
+
+![](screenshots/pb53.png)
+
+**Проверка выполнения**
+
+После каждой операции состояние службы проверялось непосредственно на целевом Ubuntu-сервере с помощью команды:
+
+```bash
+systemctl status nginx
+```
+
+Получены следующие результаты:
+
+- После запуска: `active (running)` — служба работает.
+- После остановки: `inactive (dead)` — служба остановлена.
+- После перезапуска: `active (running)` — служба успешно запущена повторно.
+
+Все три операции выполнены успешно. Ошибок выполнения Ansible Playbook не обнаружено (`failed=0`).
