@@ -291,3 +291,60 @@ kubectl get endpoints nginx-http
 curl -I http://192.168.3.24
 
 Результат: HTTP/1.1 200 OK.
+
+
+
+## 15. Создание TLS Secret и HTTPS-конфигурации
+
+Для настройки HTTPS создан самоподписанный TLS-сертификат с помощью OpenSSL.
+
+Создан Kubernetes Secret:
+- Name: `nginx-tls`
+- Type: `kubernetes.io/tls`
+- Data: 2 (сертификат и приватный ключ).
+
+Создан ConfigMap `nginx-https-config` с конфигурацией Nginx для HTTPS.
+
+Secret и ConfigMap подключены к Deployment `nginx` через volumes и volumeMounts.
+
+Проверка конфигурации:
+
+`kubectl exec deploy/nginx -- nginx -t`
+
+Результат: синтаксис конфигурации корректен, проверка завершилась успешно.
+
+## 16. Создание HTTPS Service
+
+Создан Service `nginx-https` типа ClusterIP.
+
+Команда:
+
+`kubectl expose deployment nginx --name=nginx-https --type=ClusterIP --port=443 --target-port=443`
+
+Параметры:
+- ClusterIP: `192.168.3.73`
+- Port: `443`
+- TargetPort: `443`
+- Backend: 6 Nginx Pod.
+
+## 17. Проверка HTTPS и endpoints
+
+Проверка HTTPS:
+
+`curl -k -I https://192.168.3.73`
+
+Результат: `HTTP/1.1 200 OK`.
+
+Проверка endpoints:
+
+`kubectl get endpoints nginx-http nginx-https`
+
+Результат:
+- `nginx-http` — 6 endpoints на порту 80.
+- `nginx-https` — 6 endpoints на порту 443.
+
+Оба Service успешно направляют запросы на шесть реплик Nginx.
+
+## 18. Вывод
+
+Развёрнут Kubernetes-кластер из трёх узлов. В кластере запущено приложение Nginx с шестью репликами. Настроены HTTP и HTTPS Services. Работоспособность приложения и сетевого взаимодействия проверена с помощью curl. Оба сервиса возвращают HTTP 200 OK.
