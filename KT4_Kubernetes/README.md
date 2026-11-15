@@ -195,3 +195,29 @@ kubectl version --client
 ```
 
 Результат: все три компонента установлены на `k8s-master`, `k8s-worker1` и `k8s-worker2`, версия — `v1.37.2`.
+
+
+
+## 11. Подключение Worker-нод к кластеру
+
+После инициализации Control Plane к кластеру подключены две Worker-ноды с помощью `kubeadm join`.
+
+Перед подключением настроен UFW на Master:
+- Разрешён входящий TCP-порт 6443 от `192.168.0.14` (Worker1).
+- Разрешён входящий TCP-порт 6443 от `192.168.0.16` (Worker2).
+
+Для подключения использовался CRI socket:
+`unix:///run/cri-dockerd.sock`.
+
+Обе Worker-ноды успешно прошли TLS Bootstrap и присоединились к кластеру.
+
+**Проверка:**
+
+kubectl get nodes -o wide
+
+Результат:
+- k8s-master — Ready
+- k8s-worker1 — Ready
+- k8s-worker2 — Ready
+
+Все три узла используют Kubernetes v1.37.2.
