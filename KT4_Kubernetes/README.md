@@ -28,6 +28,10 @@
 - `k8s-worker1` — `core`;
 - `k8s-worker2` — `core`.
 
+![](screenshots/master.png)
+![](screenshots/worker1.png)
+![](screenshots/worker2.png)
+
 На управляющем узле изменено системное имя хоста:
 
 ```bash
