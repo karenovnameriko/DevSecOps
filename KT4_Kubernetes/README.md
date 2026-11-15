@@ -167,3 +167,31 @@ systemctl is-active cri-docker.socket
 ```
 
 Результат на всех узлах: версия `0.4.9`, статус `active`.
+
+
+
+## 10. Установка Kubernetes
+
+На всех трёх узлах установлены компоненты Kubernetes версии **v1.37.2**:
+
+- `kubeadm` — создание и настройка кластера.
+- `kubelet` — управление Pod на узлах.
+- `kubectl` — управление кластером.
+
+Установка выполнена из официального репозитория Kubernetes `pkgs.k8s.io`.
+
+Для всех компонентов включена блокировка автоматического обновления:
+
+```bash
+sudo apt-mark hold kubelet kubeadm kubectl
+```
+
+**Проверка версий:**
+
+```bash
+kubelet --version
+kubeadm version
+kubectl version --client
+```
+
+Результат: все три компонента установлены на `k8s-master`, `k8s-worker1` и `k8s-worker2`, версия — `v1.37.2`.
