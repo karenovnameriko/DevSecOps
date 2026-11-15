@@ -221,3 +221,26 @@ kubectl get nodes -o wide
 - k8s-worker2 — Ready
 
 Все три узла используют Kubernetes v1.37.2.
+
+
+## 12. Установка и настройка Flannel
+
+Для организации сетевого взаимодействия между Pod
+используется Flannel с backend VXLAN.
+
+Flannel установлен в namespace kube-flannel
+и работает как DaemonSet — по одному Pod на каждом узле.
+
+Для корректной работы на всех узлах:
+- Загружен модуль ядра br_netfilter.
+- Настроена автоматическая загрузка модуля.
+- Включён bridge-nf-call-iptables.
+- Включён bridge-nf-call-ip6tables.
+- Включён IPv4 forwarding.
+
+**Проверка:**
+
+kubectl get pods -n kube-flannel -o wide
+
+Результат: все три Pod находятся в состоянии Running,
+READY 1/1.
