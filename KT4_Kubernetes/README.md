@@ -135,3 +135,18 @@ dpkg -l bridge-utils
 | k8s-worker2 | 29.9.3 | 1.7.1-1ubuntu2 |
 
 Docker запущен (`active`), оба компонента установлены на всех узлах.
+
+
+## 8. Настройка SSH-подключения по ключам
+
+На управляющем Mac создан SSH-ключ ED25519. Публичный ключ добавлен в `~/.ssh/authorized_keys` на всех трёх узлах.
+
+**Проверка подключения без пароля:**
+
+```bash
+ssh -o BatchMode=yes meriko@192.168.0.24 hostname
+ssh -o BatchMode=yes core@192.168.0.14 hostname
+ssh -o BatchMode=yes core@192.168.0.16 hostname
+```
+
+Все три узла успешно отвечают на SSH-подключение без ввода пароля.
