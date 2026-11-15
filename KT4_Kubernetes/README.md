@@ -150,3 +150,20 @@ ssh -o BatchMode=yes core@192.168.0.16 hostname
 ```
 
 Все три узла успешно отвечают на SSH-подключение без ввода пароля.
+
+## 9. Установка cri-dockerd
+
+`cri-dockerd` обеспечивает взаимодействие Kubernetes с Docker Engine через интерфейс CRI. Он необходим, поскольку современный Kubernetes больше не поддерживает Docker напрямую.
+
+Версия: **0.4.9**.
+
+Установлен на всех трёх узлах. Сокет `cri-docker.socket` включён и активен.
+
+**Проверка:**
+
+```bash
+cri-dockerd --version
+systemctl is-active cri-docker.socket
+```
+
+Результат на всех узлах: версия `0.4.9`, статус `active`.
