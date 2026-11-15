@@ -266,3 +266,28 @@ kubectl get pods -o wide
 - Все Pod имеют статус Running и Ready 1/1.
 - 3 Pod размещены на k8s-worker1.
 - 3 Pod размещены на k8s-worker2.
+
+
+## 14. Создание HTTP Service
+
+Создан Service nginx-http типа ClusterIP.
+
+Команда:
+
+kubectl expose deployment nginx --name=nginx-http --type=ClusterIP --port=80 --target-port=80
+
+Параметры:
+- ClusterIP: 192.168.3.24
+- Port: 80
+- TargetPort: 80
+- Backend: 6 Nginx Pod.
+
+Проверка endpoints:
+
+kubectl get endpoints nginx-http
+
+Проверка HTTP:
+
+curl -I http://192.168.3.24
+
+Результат: HTTP/1.1 200 OK.
