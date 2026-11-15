@@ -244,3 +244,25 @@ kubectl get pods -n kube-flannel -o wide
 
 Результат: все три Pod находятся в состоянии Running,
 READY 1/1.
+
+
+
+## 13. Развёртывание Nginx
+
+Создан Kubernetes Deployment `nginx` с шестью репликами.
+
+Используемый образ: nginx:stable.
+
+Команда создания:
+
+kubectl create deployment nginx --image=nginx:stable --replicas=6
+
+Проверка:
+
+kubectl get pods -o wide
+
+Результат:
+- 6 Pod успешно запущены.
+- Все Pod имеют статус Running и Ready 1/1.
+- 3 Pod размещены на k8s-worker1.
+- 3 Pod размещены на k8s-worker2.
