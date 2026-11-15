@@ -98,3 +98,40 @@ swapon --show
 - **Worker2:** запись Swap отсутствует.
 
 Таким образом, на всех трёх узлах Swap отключён, дополнительных изменений на Worker1 и Worker2 не потребовалось.
+
+
+
+## 7. Установка Docker и bridge-utils
+
+На всех трёх узлах установлены Docker Engine и `bridge-utils`.
+
+**Установка Docker:**
+
+```bash
+wget -qO- https://get.docker.com/ | sudo sh
+```
+
+**Установка bridge-utils:**
+
+```bash
+sudo apt update
+sudo apt install bridge-utils -y
+```
+
+**Проверка:**
+
+```bash
+docker --version
+sudo systemctl is-active docker
+dpkg -l bridge-utils
+```
+
+Результаты проверки:
+
+| Узел | Docker | bridge-utils |
+|---|---|---|
+| k8s-master | 29.9.3 | 1.7.1-4ubuntu3 |
+| k8s-worker1 | 29.9.3 | 1.7.1-1ubuntu2 |
+| k8s-worker2 | 29.9.3 | 1.7.1-1ubuntu2 |
+
+Docker запущен (`active`), оба компонента установлены на всех узлах.
