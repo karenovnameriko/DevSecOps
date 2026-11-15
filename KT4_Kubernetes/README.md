@@ -68,6 +68,9 @@ ping -c 4 IP-АДРЕС
 - между Worker1 и Worker2 в обоих направлениях;
 - между Worker2 и Master.
 
+![](screenshots/masterping.png)
+![](screenshots/worker1ping.png)
+![](screenshots/worker2ping.png)
 **Результат:** сетевые проверки завершились успешно. При проверке соединения Worker1 и Worker2 потерь пакетов не обнаружено.
 
 ## 5. Настройка SSH
@@ -82,6 +85,10 @@ ssh core@192.168.0.14
 ssh core@192.168.0.16
 ```
 
+
+![](screenshots/masterssh.png)
+![](screenshots/worker1ssh.png)
+![](screenshots/worker2ssh.png)
 **Результат:** SSH-подключения ко всем трём виртуальным машинам работают успешно.
 
 ## 6. Отключение Swap
@@ -130,6 +137,10 @@ sudo systemctl is-active docker
 dpkg -l bridge-utils
 ```
 
+![](screenshots/masterdoc_bridge.png)
+![](screenshots/worker1doc_bridge.png)
+![](screenshots/worker2doc_bridge.png)
+
 Результаты проверки:
 
 | Узел | Docker | bridge-utils |
@@ -152,7 +163,7 @@ ssh -o BatchMode=yes meriko@192.168.0.24 hostname
 ssh -o BatchMode=yes core@192.168.0.14 hostname
 ssh -o BatchMode=yes core@192.168.0.16 hostname
 ```
-
+![](screenshots/allssh.png)
 Все три узла успешно отвечают на SSH-подключение без ввода пароля.
 
 ## 9. Установка cri-dockerd
@@ -169,6 +180,11 @@ ssh -o BatchMode=yes core@192.168.0.16 hostname
 cri-dockerd --version
 systemctl is-active cri-docker.socket
 ```
+
+
+![](screenshots/mastercri.png)
+![](screenshots/worker1cri.png)
+![](screenshots/worker2cri.png)
 
 Результат на всех узлах: версия `0.4.9`, статус `active`.
 
@@ -198,6 +214,10 @@ kubeadm version
 kubectl version --client
 ```
 
+![](screenshots/masterkub.png)
+![](screenshots/worker1kub.png)
+![](screenshots/worker2kub.png)
+
 Результат: все три компонента установлены на `k8s-master`, `k8s-worker1` и `k8s-worker2`, версия — `v1.37.2`.
 
 
@@ -224,6 +244,8 @@ kubectl get nodes -o wide
 - k8s-worker1 — Ready
 - k8s-worker2 — Ready
 
+![](screenshots/masterww.png)
+
 Все три узла используют Kubernetes v1.37.2.
 
 
@@ -243,6 +265,8 @@ Flannel установлен в namespace kube-flannel
 - Включён IPv4 forwarding.
 
 **Проверка:**
+
+![](screenshots/flannel.png)
 
 kubectl get pods -n kube-flannel -o wide
 
@@ -264,6 +288,8 @@ kubectl create deployment nginx --image=nginx:stable --replicas=6
 Проверка:
 
 kubectl get pods -o wide
+
+![](screenshots/firstrunning.png)
 
 Результат:
 - 6 Pod успешно запущены.
@@ -291,6 +317,8 @@ kubectl expose deployment nginx --name=nginx-http --type=ClusterIP --port=80 --t
 kubectl get endpoints nginx-http
 
 Проверка HTTP:
+
+![](screenshots/http.png)
 
 curl -I http://192.168.3.24
 
@@ -325,6 +353,7 @@ Secret и ConfigMap подключены к Deployment `nginx` через volume
 
 `kubectl expose deployment nginx --name=nginx-https --type=ClusterIP --port=443 --target-port=443`
 
+
 Параметры:
 - ClusterIP: `192.168.3.73`
 - Port: `443`
@@ -342,6 +371,8 @@ Secret и ConfigMap подключены к Deployment `nginx` через volume
 Проверка endpoints:
 
 `kubectl get endpoints nginx-http nginx-https`
+
+![](screenshots/https.png)
 
 Результат:
 - `nginx-http` — 6 endpoints на порту 80.
