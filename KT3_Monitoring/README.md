@@ -30,10 +30,9 @@ whoami
 ```bash
 sudo apt update
 ```
+![](screenshots/01_server_info.png)
 
-Скриншот: `screenshots/01_server_info.png`
-
-Скриншот: `screenshots/02_apt_update.png`
+![](screenshots/02_apt_update.png)
 
 ### 2. Создание пользователя и группы
 
@@ -52,8 +51,8 @@ sudo useradd -s /usr/sbin/nologin \
 getent group prometheus
 id prometheus
 ```
+![](screenshots/03_prometheus_user.png)
 
-Скриншот: `screenshots/03_prometheus_user.png`
 
 ### 3. Создание каталогов
 
@@ -66,8 +65,9 @@ sudo mkdir -p /var/lib/prometheus
 
 - `/etc/prometheus` — конфигурационные файлы.
 - `/var/lib/prometheus` — данные временных рядов (TSDB).
+  
+![](screenshots/04_directories.png)
 
-Скриншот: `screenshots/04_directories.png`
 
 ### 4. Загрузка и распаковка Prometheus
 
@@ -97,7 +97,8 @@ sudo mv /tmp/prometheus-3.16.0.linux-arm64/promtool /usr/local/bin/
 sudo mv /tmp/prometheus-3.16.0.linux-arm64/prometheus.yml /etc/prometheus/
 ```
 
-Скриншот: `screenshots/05_installation.png`
+![](screenshots/05_installation.png)
+
 
 **Примечание:** в архиве Prometheus 3.16.0 для ARM64 отсутствовали каталоги `consoles` и `console_libraries`, поэтому они не переносились. Для запуска сервиса и работы веб-интерфейса они не потребовались.
 
@@ -117,7 +118,8 @@ sudo chown -R prometheus:prometheus /var/lib/prometheus
 
 Это позволяет запускать Prometheus от отдельного непривилегированного пользователя.
 
-Скриншот: `screenshots/06_permissions_service.png`
+![](screenshots/06_permissions_service.png)
+
 
 ### 6. Создание systemd-службы
 
@@ -166,7 +168,7 @@ sudo systemctl is-enabled prometheus
 
 Служба успешно запущена, её состояние — `active (running)`. Автозапуск включён (`enabled`).
 
-Скриншот: `screenshots/07_prometheus_running.png`
+![](screenshots/07_prometheus_running.png)
 
 ### 7. Настройка межсетевого экрана
 
@@ -200,7 +202,7 @@ http://172.16.222.129:9090
 
 Веб-интерфейс Prometheus успешно загрузился.
 
-Скриншот: `screenshots/08_prometheus_web.png`
+![](screenshots/08_prometheus_web.png)
 
 ## Результат работы
 
